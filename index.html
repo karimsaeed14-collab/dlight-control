@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DLight Control</title>
+<meta name="description" content="DLight Control — إدارة حسابات DLight">
+<meta name="theme-color" content="#1A1A22">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DLight">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  html,body{margin:0;height:100%;background:#1A1A22;overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);box-sizing:border-box;background:#1A1A22}
+  #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;background:#1A1A22;transition:opacity .35s;z-index:2}
+  #splash.gone{opacity:0;pointer-events:none}
+  #splash img{width:168px;height:168px}
+  .bar{width:120px;height:3px;background:#2A2A34;border-radius:3px;overflow:hidden}
+  .bar i{display:block;width:40%;height:100%;background:#FCD12D;border-radius:3px;animation:run 1.1s ease-in-out infinite}
+  @keyframes run{0%{transform:translateX(160%)}100%{transform:translateX(-260%)}}
+  #off{display:none;color:#F5F5F5;font:16px/1.6 Tajawal,system-ui,sans-serif;text-align:center;padding:0 24px}
+  #off button{margin-top:12px;background:#FCD12D;color:#1A1A22;border:0;border-radius:8px;padding:10px 20px;font:inherit;font-weight:700}
+  @media (prefers-reduced-motion:reduce){.bar i{animation:none}}
+</style>
+</head>
+<body>
+<div id="splash"><img src="icon-512.png" alt="DLight"><div class="bar"><i></i></div>
+  <div id="off">مفيش إنترنت دلوقتي.<br><button onclick="location.reload()">جرّب تاني</button></div></div>
+<iframe id="app" title="DLight Control" allow="clipboard-read; clipboard-write; fullscreen" src="https://script.google.com/macros/s/AKfycbxl1bRZlh4L7kzll05TaXYdjYmm8MgBK8XRen7cjOiJEqy70b_BXEA2tZ-PCuJAojIg/exec"></iframe>
+<script>
+  var sp=document.getElementById('splash');
+  document.getElementById('app').addEventListener('load',function(){setTimeout(function(){sp.classList.add('gone')},250)});
+  if(!navigator.onLine){document.getElementById('off').style.display='block';document.querySelector('.bar').style.display='none'}
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+</script>
+</body>
+</html>
