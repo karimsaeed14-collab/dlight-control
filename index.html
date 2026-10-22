@@ -37,7 +37,7 @@
   document.getElementById('app').addEventListener('load',function(){setTimeout(function(){sp.classList.add('gone')},250)});
   if(!navigator.onLine){document.getElementById('off').style.display='block';document.querySelector('.bar').style.display='none'}
   // التطبيق بيبعت reload لما يكون فيه نسخة جديدة
-  window.addEventListener('message',function(e){if(e.data&&e.data.dlc==='reload'){sp.classList.remove('gone');var f=document.getElementById('app');f.src=f.src.split('#')[0]+'#'+Date.now()}});
+  window.addEventListener('message',function(e){if(e.data&&e.data.dlc==='reload'){sp.classList.remove('gone');var f=document.getElementById('app');f.src=f.src.split('?')[0]+'?r='+Date.now()}});
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
 </script>
 </body>
