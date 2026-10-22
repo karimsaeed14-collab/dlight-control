@@ -40,7 +40,7 @@
   window.addEventListener('message',function(e){if(e.data&&e.data.dlc==='reload'){sp.classList.remove('gone');var f=document.getElementById('app');f.src=f.src.split('?')[0]+'?r='+Date.now()}});
   // مشاركة وتحميل الصور: التطبيق جوه إطار مش مسموحله يشارك، فبيبعت الصورة هنا والصفحة دي تشاركها
   function dataFile(u,name){var p=u.split(','),m=p[0].match(/:(.*?);/)[1],b=atob(p[1]),n=b.length,a=new Uint8Array(n);while(n--)a[n]=b.charCodeAt(n);return new File([a],name,{type:m})}
-  function dl(u,name){var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove()}
+  function dl(u,name){var a=document.createElement('a'),o=URL.createObjectURL(dataFile(u,name));a.href=o;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(o)},5000)}
   window.addEventListener('message',function(e){
     var d=e.data;if(!d||!d.dlc)return;
     var reply=function(o){try{e.source.postMessage(Object.assign({dlc:'res',id:d.id},o),'*')}catch(x){}};
