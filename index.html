@@ -38,6 +38,20 @@
   if(!navigator.onLine){document.getElementById('off').style.display='block';document.querySelector('.bar').style.display='none'}
   // التطبيق بيبعت reload لما يكون فيه نسخة جديدة
   window.addEventListener('message',function(e){if(e.data&&e.data.dlc==='reload'){sp.classList.remove('gone');var f=document.getElementById('app');f.src=f.src.split('?')[0]+'?r='+Date.now()}});
+  // مشاركة وتحميل الصور: التطبيق جوه إطار مش مسموحله يشارك، فبيبعت الصورة هنا والصفحة دي تشاركها
+  function dataFile(u,name){var p=u.split(','),m=p[0].match(/:(.*?);/)[1],b=atob(p[1]),n=b.length,a=new Uint8Array(n);while(n--)a[n]=b.charCodeAt(n);return new File([a],name,{type:m})}
+  function dl(u,name){var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove()}
+  window.addEventListener('message',function(e){
+    var d=e.data;if(!d||!d.dlc)return;
+    var reply=function(o){try{e.source.postMessage(Object.assign({dlc:'res',id:d.id},o),'*')}catch(x){}};
+    if(d.dlc==='download'){dl(d.url,d.name);reply({ok:true});return}
+    if(d.dlc==='share'){
+      var f;try{f=dataFile(d.url,d.name)}catch(x){reply({ok:false,err:'bad'});return}
+      if(navigator.canShare&&navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:d.name}).then(function(){reply({ok:true})},function(x){reply({ok:false,err:x&&x.name})});
+      }else{dl(d.url,d.name);reply({ok:false,err:'nosupport',downloaded:true})}
+    }
+  });
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
 </script>
 </body>
